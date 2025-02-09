@@ -142,7 +142,7 @@ export default function Main() {
                     <div className="whitespace-pre-wrap text-2xl text-secondary-foreground font-semibold tracking-tighter sm:text-5xl xl:text-6xl/none">
                       <span>{"Software Engineer and "}</span>
                       <Typewriter
-                        text={["Front-End", "UX Designer", ""]}
+                        text={["Back-End", "Front-End", "UX Design", "Engenharia de Software"]}
                         speed={70}
                         className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-300 via-gray/90 to-rose-300"
                         waitTime={1500}
@@ -182,7 +182,7 @@ export default function Main() {
                     <p>
                       Meu nome é João, atualmente moro no Brasil. Estou no penúltimo
                       em Engenharia de Software, atualmente trabalho como
-                      Analista de desenvolvimento Junior e quero me concentrar mais em front end. Buscando
+                      Analista de desenvolvimento Junior e quero  poder me concentrar mais em oportunidades de trabalho front end. Buscando
                       sempre desenvolver telas robustas e responsivas. Voce pode
                       conferir meu{" "}
                       <Link to={"/curriculum"}>
@@ -194,10 +194,10 @@ export default function Main() {
                       .
                     </p>
                     <p>
-                      Gosto de projetar designs e demonstrar minha criatividade
-                      na prática durante o desenvolvimento dos projetos. Se você
-                      está interessado nas ferramentas e softwares que utilizo,
-                      confira minha{" "}
+                      Gosto de pensar criativamente, desenvolver e desenhar designs
+                      trabahar com projetos é algo que gosto muito. Se você
+                      tiver interesse nas ferramentas e softwares que utilizo e tenho familiaridade,
+                      olhe minha{" "}
                       <Link to={"/uses"}>
                         <span className="relative cursor-pointer group text-[#A4BDD5]">
                           página de uso
@@ -207,10 +207,10 @@ export default function Main() {
                       .
                     </p>
                     <p>
-                      Nas horas vagas gosto de jogar Roblox, Path of Exile, ler
-                      e gosto de colecionar Sylvanian Families. Estou sempre
-                      disposta a ouvir sobre novos projetos entao fique à
-                      vontade para me escrever.
+                      Nas horas vagas gosto de jogar, ouvir musica
+                      e colecionar cards. Estou sempre
+                      interessado em ouvir sobre novos projetos entao fique à
+                      vontade para me enviar uma mensagem e entrar em contato.
                     </p>
                     <Link to={"/contact"}>
                       <button
@@ -229,7 +229,7 @@ export default function Main() {
 
                 <div className="relative p-10 sm:p-0">
                   <p className="absolute rotate-90 top-10 -right-48 font-bold text-4xl sm:-right-36 sm:text-9xl text-[#A4BDD5]">
-                    みき
+                      私は
                   </p>
 
                   <motion.img
@@ -281,15 +281,17 @@ export default function Main() {
               <section id="timeline">
                 <div className="container mx-auto px-4 py-12">
                   <h1 className="text-2xl text-foreground tracking-widest uppercase font-semibold">
-                    <DecoderText text={"Minha Experiencia Profissional"} delay={500} />
+                    <DecoderText text={"Experiencia Profissional e Academica"} delay={500} />
                   </h1>
                   <div className="flex flex-col md:grid grid-cols-9 mx-auto p-2 text-blue-50">
                     <TimelineDot index={0} />
-                    <TimelineItem title="Evento 1" description="Descrição do evento 1" isLeft={true} index={1} />
-                    <TimelineItem title="Evento 2" description="Descrição do evento 2" isLeft={false} index={2} />
-                    <TimelineItem title="Evento 3" description="Descrição do evento 3" isLeft={true} index={3} />
-                    <TimelineItem title="Evento 4" description="Descrição do evento 4" isLeft={false} index={4} />
-                    <TimelineItem title="Evento 5" description="Descrição do evento 5" isLeft={true} index={5} />
+                    <TimelineItem title="2021 - 2025" description="Iniciei a graduação de Engenharia de Software" isLeft={true} index={1} />
+                    <TimelineItem title="12/2023 - 06/2024" description="Estagiei como desenvolvedor fullstack na Vital Scheffer" isLeft={false} index={2} />
+                    <TimelineItem title="06/2024 - 12/2024" description="Iniciei meu estagio na Pilgrims Consulting como Desenvolvedor de software" isLeft={true} index={3} />
+                    <TimelineItem title="12/2024 - Presente" description="Fui efetivado como Analista de Desenvolvimento Junior" isLeft={false} index={4} />
+                    <TimelineItem title="01/2025" description="Recebi minha certificação internacional JLPT N4" isLeft={true} index={4} />
+                    <TimelineItem title="01/2025" description="Recebi minha certificação da fundação bradesco de fundamentos do design grafico" isLeft={false} index={4} />
+                    <TimelineItem title="12/2025" description="Fim previsto para minha graduação como Engenheiro de Software" isLeft={true} index={5} />
                     <TimelineDot index={6} />
                   </div>
                 </div>
