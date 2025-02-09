@@ -11,73 +11,112 @@ const tools = [
   },
   {
     lang: "Visual Studio Code",
-    desc: "como meu editor de texto, com o tema Dracula.",
+    desc: "Meu principal editor de texto",
     link: "https://code.visualstudio.com/",
   },
   {
     lang: "React",
-    desc: "para mim, é a minha biblioteca JavaScript favorita, e tenho preferência por usá-la em meus projetos.",
+    desc: "Tenho preferencia em utilizar React devido a minha familiaridade com ele.",
     link: "https://react.dev/",
   },
   {
     lang: "Three.JS",
-    desc: "para os efeitos 3D, é necessário um conhecimento um pouco avançado, mas, quando você domina, consegue fazer coisas incríveis!",
+    desc: "Estive estudando recentemente e gosto muito do visual unico que ela traz para os projetos.",
     link: "https://threejs.org/",
   },
   {
     lang: "TailwindCSS",
-    desc: "estou optando por utilizar o TailwindCSS pela sua facilidade de uso, permitindo estilizar diretamente dentro das divs.",
+    desc: "Adquiri experiencia com o tailwind trabalhando em alguns projetos internos de duas empresas na qual trabalhei e gosto do seu funcionamento",
     link: "https://tailwindcss.com/",
   },
   {
     lang: "Framer Motion",
-    desc: "para as animações no JavaScript eu utilizo o Framer Motion, é uma ótima maneira de adicionar animações ao React e ao Three.JS.",
+    desc: "Para as animações no JavaScript eu utilizo o Framer Motion,devido a praticidade de adicionar animações aos projetos",
     link: "https://motion.dev/",
   },
   {
     lang: "ShadCN",
-    desc: "para alguns componentes e temas eu utilizei o ShadCN, são componentes projetados que você pode copiar e colar em seus aplicativos, utilizando o TailwindCSS.",
+    desc: "Alguns componentes e temas utilizados neste projeto o ShadCN, são componentes projetados para copiar e colar em seus aplicativos, com TailwindCSS.",
     link: "https://ui.shadcn.com/",
+  },
+  {
+    lang: "Daisy",
+    desc: "Gosto de utilizar alguns componentes vindo da biblioteca DaisyUI durante minhas tarefas de rotina também.",
+    link: "https://daisyui.com",
+  },
+];
+
+const tools2 = [
+  {
+    lang: "Python",
+    desc: "Trabalhei com muitas automações usando python além desenvolvimento de ferramentas internas, bots, scripts.",
+    link: "https://www.python.org",
+  },
+  {
+    lang: "Apache Airflow",
+    desc: "Utilizei diariamente o airflow para execução de dags com tarefas recorrentes dentro do ciclo de vida da empresa.",
+    link: "https://airflow.apache.org",
+  },
+  {
+    lang: "GLPI",
+    desc: "Para gestão de projetos, aplicação de metodologias ageis dentro da equipe e gestão de chamados fiz uso do GLPI dentro do ambiente corporativo.",
+    link: "https://glpi-project.org/pt-br/",
+  },
+  {
+    lang: "Angular",
+    desc: "Atuei na manutenção e desenvolvimento de funcionalidades dentro de um ambiente em angular para gestão do negocio.",
+    link: "https://angular.dev",
+  },
+  {
+    lang: "Meta",
+    desc: "Para BI gosto de utilizar a ferramenta open source metabase que permite a criação e gestão de dashboards e relatorios de maneira muito simples e pratica.",
+    link: "https://www.metabase.com",
+  },
+  {
+    lang: "R",
+    desc: "Gosto de utilizar R e Rstudio para tarefas envolvendo grandes volumes de dados.",
+    link: "https://www.r-project.org",
   },
 ];
 
 const system = [
   {
     title: "Desktop",
-    desc: "Personalizado",
+    desc: " i5-8500 // RTX3060 - OC",
   },
   {
     title: "Sistema operacional",
-    desc: "Ubuntu",
+    desc: "Windows / Debian",
   },
   {
     title: "Monitor",
-    desc: "LG ultrawide 29um69g",
+    desc: "LG 23MP55HQ // Dell P2219H",
   },
   {
     title: "Mouse",
-    desc: "Logitech G705",
+    desc: "Logitech 203",
   },
   {
     title: "Teclado",
-    desc: "Royal Kludge R75 switch brown",
+    desc: "Custom Mitra White",
   },
   {
     title: "Headset",
-    desc: "Logitech G435",
+    desc: "Samsung buds FE",
   },
 ];
 
 export default function Uses() {
   const [designTool] = tools;
+  const [backTool] = tools2;
   const devTools = tools.slice(1);
 
   return (
     <div className="flex flex-col items-center justify-center">
       <div>
         <img
-          className="fixed top-0 left-0 w-full h-full object-cover opacity-10"
-          src="/assets/cat.gif"
+          className="fixed top-0 left-0 w-full h-full object-cover opacity-30"
+          src="/assets/rei-ayanami-rei.gif"
           width="550"
           height="550"
           alt="raiden mei"
@@ -130,6 +169,38 @@ export default function Uses() {
                 </Link>
                 <span className="whitespace-normal">
                   {tool.desc.replace(` ${tool.lang},`, "")}
+                </span>
+              </p>
+            </div>
+          ))}
+        </div>
+
+        <div className="my-6">
+          <h1 className="text-3xl text-foreground font-semibold">
+            <DecoderText text={"Outras Tecnologias"} delay={500} />
+          </h1>
+          <p className="text-muted-foreground mt-4">
+            Durante meu tempo de trabalho como desenvolvedor utilizei outras ferramentas
+            para desenvolvimento de automações, analises de dados e trabalhos em outras areas.
+            <br/><br/>
+            Abaixo segue uma breve listagem das quais eu tenho mais familiaridade.
+          </p>
+        </div>
+
+        <div className="mb-6">
+          <h1 className="text-2xl font-semibold">Desenvolvimento</h1>
+          {tools2.map((backTool, index) => (
+            <div key={index} className="my-4">
+              <p className="flex items-center text-muted-foreground flex-wrap">
+                <ChevronRight className="text-custonText" />
+                <Link to={backTool.link} className="whitespace-nowrap">
+                  <span className="relative text-custonText cursor-pointer group mx-1">
+                    {backTool.lang}
+                    <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-custonText transition-all duration-300 ease-in-out group-hover:w-full" />
+                  </span>
+                </Link>
+                <span className="whitespace-normal">
+                  {backTool.desc.replace(` ${backTool.lang},`, "")}
                 </span>
               </p>
             </div>

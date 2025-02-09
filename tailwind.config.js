@@ -24,7 +24,7 @@ export default {
         dancingScript: ["Dancing Script"],
       },
       colors: {
-        custonText: "#EDADBD",
+        custonText: "#2C3E50",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

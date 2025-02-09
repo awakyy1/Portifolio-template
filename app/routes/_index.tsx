@@ -27,6 +27,65 @@ import {
 import Autoplay from "embla-carousel-autoplay";
 import Typewriter from "~/components/fancy/typewriter";
 
+const fadeInUp = {
+  hidden: { opacity: 0, y: 30 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: i * 0.3, duration: 0.6 }
+  })
+};
+
+const TimelineItem = ({ title, description, isLeft, index }: { title: string; description: string; isLeft: boolean; index: number }) => {
+  return (
+    <motion.div
+      className={`flex ${isLeft ? 'flex-row-reverse md:contents' : 'md:contents'}`}
+      custom={index}
+      initial="hidden"
+      animate="visible"
+      variants={fadeInUp}
+    >
+      {isLeft && (
+        <div className="bg-[#ABC4DA] col-start-1 col-end-5 p-4 rounded-xl my-4 ml-auto shadow-md">
+          <h3 className="font-semibold text-lg mb-1">{title}</h3>
+          <p className="leading-tight text-justify">{description}</p>
+        </div>
+      )}
+      <motion.div className="col-start-5 col-end-6 md:mx-auto relative mr-10">
+        <div className="h-full w-6 flex items-center justify-center">
+          <div className="h-full w-1 bg-[#8FA9C9] pointer-events-none"></div>
+        </div>
+        <motion.div
+          className="w-6 h-6 absolute top-1/2 -mt-3 rounded-full bg-[#7B96B8] shadow"
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ delay: index * 0.3, duration: 0.4 }}
+        ></motion.div>
+      </motion.div>
+      {!isLeft && (
+        <div className="bg-[#ABC4DA] col-start-6 col-end-10 p-4 rounded-xl my-4 mr-auto shadow-md">
+          <h3 className="font-semibold text-lg mb-1">{title}</h3>
+          <p className="leading-tight text-justify">{description}</p>
+        </div>
+      )}
+    </motion.div>
+  );
+};
+
+
+const TimelineDot = ({ index }: { index: number }) => (
+  <motion.div
+    className="col-start-5 col-end-6 md:mx-auto relative mr-10"
+    initial={{ scale: 0 }}
+    animate={{ scale: 1 }}
+    transition={{ delay: index * 0.3, duration: 0.4 }}
+  >
+    <div className="w-6 h-6 rounded-full bg-[#7B96B8] shadow mx-auto"></div>
+  </motion.div>
+);
+
+
+
 export const meta: MetaFunction = () => {
   return [
     { title: "João ielen" },
@@ -222,94 +281,22 @@ export default function Main() {
               </div>
             </motion.div>
           </section>
-
-          <section id="projects">
-            <motion.div
-              initial="offscreen"
-              whileInView="onscreen"
-              viewport={{ once: true, amount: 0.8 }}
-              className="container mx-auto justify-center items-center px-4 py-12 "
-            >
-              <h1 className="text-2xl text-foreground tracking-widest uppercase font-semibold">
-                <DecoderText text={"Projetos"} delay={500} />
-              </h1>
-              <motion.div
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-              >
-                {projects.map((project) => (
-                  <div
-                    key={project.id}
-                    className="mt-4 bg-card text-card-foreground rounded-lg shadow-lg overflow-hidden cursor-pointer transition-transform duration-200 hover:scale-105"
-                    onClick={() => setSelectedProject(project)}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter" || e.key === " ")
-                        setSelectedProject(project);
-                    }}
-                    role="button"
-                    tabIndex={0}
-                  >
-                    <img
-                      src={project?.image ?? ""}
-                      alt={project?.title ?? "Imagem do projeto"}
-                      className="w-full h-48 object-cover"
-                    />
-                    <div className="p-4">
-                      <h3 className="text-xl font-semibold mb-2">
-                        {project.title ?? "Título do projeto"}
-                      </h3>
-                      <p className="text-muted-foreground">
-                        {project.description ?? "Descrição do projeto"}
-                      </p>
-                    </div>
+              <section id="timeline">
+                <div className="container mx-auto px-4 py-12">
+                  <h1 className="text-2xl text-foreground tracking-widest uppercase font-semibold">
+                    <DecoderText text={"Minha Experiencia Profissional"} delay={500} />
+                  </h1>
+                  <div className="flex flex-col md:grid grid-cols-9 mx-auto p-2 text-blue-50">
+                    <TimelineDot index={0} />
+                    <TimelineItem title="Evento 1" description="Descrição do evento 1" isLeft={true} index={1} />
+                    <TimelineItem title="Evento 2" description="Descrição do evento 2" isLeft={false} index={2} />
+                    <TimelineItem title="Evento 3" description="Descrição do evento 3" isLeft={true} index={3} />
+                    <TimelineItem title="Evento 4" description="Descrição do evento 4" isLeft={false} index={4} />
+                    <TimelineItem title="Evento 5" description="Descrição do evento 5" isLeft={true} index={5} />
+                    <TimelineDot index={6} />
                   </div>
-                ))}
-              </motion.div>
-
-              <Dialog
-                open={selectedProject !== null}
-                onOpenChange={() => setSelectedProject(null)}
-              >
-                {selectedProject && (
-                  <DialogContent>
-                    <DialogHeader>
-                      <DialogTitle>{selectedProject.title}</DialogTitle>
-                      <DialogDescription>
-                        <img
-                          src={selectedProject.image ?? ""}
-                          alt={selectedProject.title ?? "Imagem do projeto"}
-                          className="w-full h-48 object-cover rounded-md mb-4"
-                        />
-                        <p>{selectedProject.details}</p>
-                      </DialogDescription>
-                    </DialogHeader>
-                    <div className="mt-4 flex justify-between">
-                      <div className="flex gap-2">
-                        <div>
-                          <Link to={selectedProject.link ?? "#"}>
-                            <Button className="gap-2" variant={"secondary"}>
-                              <FaGithub /> GitHub
-                            </Button>
-                          </Link>
-                        </div>
-
-                        {selectedProject.website && (
-                          <div>
-                            <Link to={selectedProject.website}>
-                              <Button className="gap-2" variant={"secondary"}>
-                                <ArrowUpRight className="w-4 h-4" /> Ver Site
-                              </Button>
-                            </Link>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </DialogContent>
-                )}
-              </Dialog>
-            </motion.div>
-          </section>
+                </div>
+              </section>
         </main>
       </div>
     </div>
