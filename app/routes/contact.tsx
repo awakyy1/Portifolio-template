@@ -45,7 +45,7 @@ export default function Contact() {
 
       <div className="relative z-10 h-[84vh] flex items-center justify-center flex-col gap-6 px-4">
         <h1 className="text-4xl text-foreground tracking-wide font-bold text-center">
-          <DecoderText text={"Diga olá"} delay={500} />
+          <DecoderText text={"Me mande uma mensagem!"} delay={500} />
         </h1>
 
         <form

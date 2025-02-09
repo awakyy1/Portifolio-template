@@ -11,7 +11,7 @@ export default function curriculum() {
       </h1>
 
       <span className="text-center text-gray-400 font-xs">
-        Fique a vontade para olhar e baixar meu curriculo 😀{" "}
+        Fique a vontade para olhar e baixar meu curriculo {" "}
       </span>
       <div className="flex flex-col items-center justify-start h-screen pt-10 gap-4">
         <a
