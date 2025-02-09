@@ -25,7 +25,7 @@ export default function Curriculum() {
       };
   }
 
-  const pdfUrl = "/curriculoTifany.pdf";
+  const pdfUrl = "/curriculo-joao-ielen.pdf";
   const [numPages, setNumPages] = useState<number | null>(null);
   const onDocumentLoadSuccess = ({ numPages }: { numPages: number }) => {
     setNumPages(numPages);

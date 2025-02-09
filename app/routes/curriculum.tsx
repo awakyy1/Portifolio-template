@@ -15,8 +15,8 @@ export default function curriculum() {
       </span>
       <div className="flex flex-col items-center justify-start h-screen pt-10 gap-4">
         <a
-          href="/curriculoTifany.pdf"
-          download="Curriculo_Tifany_Alves.pdf"
+          href="/curriculo-joao-ielen.pdf"
+          download="Currículo João ielen"
           className="font-semibold relative overflow-hidden bg-transparent text-custonText px-4 py-1 transition duration-300 group"
         >
           <span className="absolute inset-0 bg-custonText transition-transform duration-300 scale-x-0 group-hover:scale-x-100 origin-left" />
