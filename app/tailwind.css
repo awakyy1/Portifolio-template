@@ -24,6 +24,9 @@
     --input: 240 5.9% 90%;
     --ring: 240 5.9% 10%;
     --radius: 0.5rem;
+    --timelinedots: 213 30% 60%;
+    --timeline-line: 213 30% 70%;
+    --timeline-cards: 208 39% 76%;
   }
 
   .dark,
@@ -47,6 +50,9 @@
     --border: 240 3.7% 15.9%;
     --input: 240 3.7% 15.9%;
     --ring: 240 4.9% 83.9%;
+    --timelinedots: 0 0% 100%;
+    --timeline-line: 0 0% 100%; 
+    --timeline-cards: 0 0% 20%;
   }
 }
 

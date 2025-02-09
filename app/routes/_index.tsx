@@ -46,24 +46,24 @@ const TimelineItem = ({ title, description, isLeft, index }: { title: string; de
       variants={fadeInUp}
     >
       {isLeft && (
-        <div className="bg-[#ABC4DA] col-start-1 col-end-5 p-4 rounded-xl my-4 ml-auto shadow-md">
+        <div className="bg-[hsl(var(--timeline-cards))] col-start-1 col-end-5 p-4 rounded-xl my-4 ml-auto shadow-md"> 
           <h3 className="font-semibold text-lg mb-1">{title}</h3>
           <p className="leading-tight text-justify">{description}</p>
         </div>
       )}
       <motion.div className="col-start-5 col-end-6 md:mx-auto relative mr-10">
         <div className="h-full w-6 flex items-center justify-center">
-          <div className="h-full w-1 bg-[#8FA9C9] pointer-events-none"></div>
+          <div className="h-full w-1 bg-[hsl(var(--timeline-line))] pointer-events-none"></div> 
         </div>
         <motion.div
-          className="w-6 h-6 absolute top-1/2 -mt-3 rounded-full bg-[#7B96B8] shadow"
+          className="w-6 h-6 absolute top-1/2 -mt-3 rounded-full bg-[hsl(var(--timelinedots))] shadow"
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{ delay: index * 0.3, duration: 0.4 }}
         ></motion.div>
       </motion.div>
       {!isLeft && (
-        <div className="bg-[#ABC4DA] col-start-6 col-end-10 p-4 rounded-xl my-4 mr-auto shadow-md">
+        <div className="bg-[hsl(var(--timeline-cards))] col-start-6 col-end-10 p-4 rounded-xl my-4 mr-auto shadow-md"> 
           <h3 className="font-semibold text-lg mb-1">{title}</h3>
           <p className="leading-tight text-justify">{description}</p>
         </div>
@@ -72,7 +72,6 @@ const TimelineItem = ({ title, description, isLeft, index }: { title: string; de
   );
 };
 
-
 const TimelineDot = ({ index }: { index: number }) => (
   <motion.div
     className="col-start-5 col-end-6 md:mx-auto relative mr-10"
@@ -80,11 +79,9 @@ const TimelineDot = ({ index }: { index: number }) => (
     animate={{ scale: 1 }}
     transition={{ delay: index * 0.3, duration: 0.4 }}
   >
-    <div className="w-6 h-6 rounded-full bg-[#7B96B8] shadow mx-auto"></div>
+    <div className="w-6 h-6 rounded-full bg-[hsl(var(--timelinedots))] shadow mx-auto"></div>
   </motion.div>
 );
-
-
 
 export const meta: MetaFunction = () => {
   return [
