@@ -180,7 +180,7 @@ export default function Main() {
                 <div className="max-w-lg text-muted-foreground">
                   <div className="gap-4 flex flex-col tracking-wide">
                     <p>
-                      Meu nome é João, atualmente moro no Brasil. Estou no penúltimo
+                      Meu nome é João, atualmente moro no Brasil. Estou no penúltimo periodo
                       em Engenharia de Software, atualmente trabalho como
                       Analista de desenvolvimento Junior e quero  poder me concentrar mais em oportunidades de trabalho front end. Buscando
                       sempre desenvolver telas robustas e responsivas. Voce pode
