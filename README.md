@@ -9,11 +9,11 @@ Construído com 💜 utilizando:
 - 🎨 [Three.js](https://threejs.org/) para elementos 3D
 - ✨ [Framer Motion](https://www.framer.com/motion/) para animações suaves
 
-Acesse a versão online: 👉 [joao.site]([https://pinuya.site](https://portifolio-ivory-phi.vercel.app/))
+Acesse a versão online: [joao.site]([https://pinuya.site](https://portifolio-ivory-phi.vercel.app/))
 
 ---
 
-## 🚀 Como rodar localmente
+## Como rodar localmente
 
 ### **Pré-requisitos**
 Certifique-se de ter instalado:
@@ -34,7 +34,7 @@ Inicie o ambiente de desenvolvimento com:
 bun dev
 ```
 
-Agora é só acessar [`localhost:3000`](http://localhost:3000) e explorar! 🌟
+Agora é só acessar [`localhost:3000`](http://localhost:3000) 
 
 ---
 
@@ -49,6 +49,7 @@ Quer modificar ou contribuir? Fique à vontade!
 
 ## 📬 Contato
 Curtiu o projeto? Quer bater um papo? Me encontre em:
+
 📧 [joaoielen@gmail.com](mailto:joaoielen@gmail.com)  
 💼 [LinkedIn](https://www.linkedin.com/feed/)
 
