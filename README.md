@@ -2,7 +2,7 @@
 
 Bem-vindo ao meu portfólio! Um espaço onde compartilho meus projetos e exploro o mundo do design e desenvolvimento interativo.
 
-[![Visualizar o site]([https://i.imgur.com/BqUEwOw.png)](https://portifolio-ivory-phi.vercel.app/)
+[![Visualizar o site](https://i.imgur.com/BqUEwOw.png)](https://portifolio-ivory-phi.vercel.app/)
 
 Construído com 💜 utilizando:
 - 🚀 [Remix](https://remix.run/) para um backend eficiente
