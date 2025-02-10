@@ -49,10 +49,7 @@ Quer modificar ou contribuir? Fique à vontade!
 
 ## 📬 Contato
 Curtiu o projeto? Quer bater um papo? Me encontre em:
-📧 [meuemail@exemplo.com](mailto:meuemail@exemplo.com)  
-🐦 [Twitter](https://twitter.com/exemplo)  
-💼 [LinkedIn](https://linkedin.com/in/exemplo)
+📧 [joaoielen@gmail.com](mailto:joaoielen@gmail.com)  
+💼 [LinkedIn](https://www.linkedin.com/feed/)
 
 ---
-
-🎨 "Criatividade é conectar coisas." — Steve Jobs
