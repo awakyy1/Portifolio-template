@@ -2,14 +2,14 @@
 
 Bem-vindo ao meu portfólio! Um espaço onde compartilho meus projetos e exploro o mundo do design e desenvolvimento interativo.
 
-[![Visualizar o site](/public/assets/portfolioImage.png)](https://pinuya.site)
+[![Visualizar o site]([https://i.imgur.com/BqUEwOw.png)](https://portifolio-ivory-phi.vercel.app/)
 
 Construído com 💜 utilizando:
 - 🚀 [Remix](https://remix.run/) para um backend eficiente
 - 🎨 [Three.js](https://threejs.org/) para elementos 3D
 - ✨ [Framer Motion](https://www.framer.com/motion/) para animações suaves
 
-Acesse a versão online: 👉 [pinuya.site](https://pinuya.site)
+Acesse a versão online: 👉 [joao.site]([https://pinuya.site](https://portifolio-ivory-phi.vercel.app/))
 
 ---
 
