@@ -4,10 +4,10 @@ Bem-vindo ao meu portfólio! Um espaço onde compartilho meus projetos e exploro
 
 [![Visualizar o site](https://i.imgur.com/BqUEwOw.png)](https://portifolio-ivory-phi.vercel.app/)
 
-Construído com 💜 utilizando:
-- 🚀 [Remix](https://remix.run/) para um backend eficiente
-- 🎨 [Three.js](https://threejs.org/) para elementos 3D
-- ✨ [Framer Motion](https://www.framer.com/motion/) para animações suaves
+Construído utilizando:
+-  [Remix](https://remix.run/) para um backend eficiente
+-  [Three.js](https://threejs.org/) para elementos 3D
+-  [Framer Motion](https://www.framer.com/motion/) para animações suaves
 
 Acesse a versão online: [joao.site](https://portifolio-ivory-phi.vercel.app/)
 
@@ -43,14 +43,14 @@ Quer modificar ou contribuir? Fique à vontade!
 1. Clone o repositório
 2. Crie uma nova branch (`git checkout -b minha-branch`)
 3. Faça suas mudanças e teste
-4. Envie um PR 🚀
+4. Envie um PR 
 
 ---
 
-## 📬 Contato
+##  Contato
 Curtiu o projeto? Quer bater um papo? Me encontre em:
 
-📧 [joaoielen@gmail.com](mailto:joaoielen@gmail.com)  
-💼 [LinkedIn](https://www.linkedin.com/feed/)
+ [joaoielen@gmail.com](mailto:joaoielen@gmail.com)  
+ [LinkedIn](https://www.linkedin.com/feed/)
 
 ---
