@@ -18,3 +18,11 @@ export interface Project {
 export interface Skill {
 	title: string
 }
+
+export type {
+	Database,
+	Json,
+	Tables,
+	TablesInsert,
+	TablesUpdate,
+} from "./database"

@@ -1,5 +1,21 @@
-node_modules
+# Dependencies
+/node_modules
 
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Build artifacts
 /.cache
 /build
-.env
+/public/build
+/netlify/functions
+
+# Platform metadata
+/.netlify
+/.vercel
+
+# Editor and OS files
+.DS_Store
+Thumbs.db

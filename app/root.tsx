@@ -17,6 +17,7 @@ import { themeSessionResolver } from "./cookies";
 import type { LinksFunction, LoaderFunctionArgs } from "@remix-run/node";
 import Footer from "./components/Footer";
 import Nav from "./components/Nav";
+import { LanguageProvider } from "./lib/language-context";
 
 export const links: LinksFunction = () => {
   return [
@@ -71,14 +72,15 @@ export function App() {
       </head>
 
       <body className="font-poppins">
-        <Nav />
-
-        <div className="pt-20">
-          <Outlet />
-        </div>
+        <LanguageProvider>
+          <Nav />
+          <div className="pt-20">
+            <Outlet />
+          </div>
+          <Footer />
+        </LanguageProvider>
         <ScrollRestoration />
         <Scripts />
-        <Footer />
       </body>
     </html>
   );

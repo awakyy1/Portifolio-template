@@ -4,8 +4,10 @@ import { DecoderText } from "~/components/decoder-text";
 import MouseMoveEffect from "~/components/mouse-move-effect";
 import { Input } from "~/components/ui/input";
 import emailjs from "@emailjs/browser";
+import { useLanguage } from "~/lib/language-context";
 
 export default function Contact() {
+  const { language } = useLanguage();
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [status, setStatus] = useState("");
@@ -13,9 +15,18 @@ export default function Contact() {
   const sendEmail = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const serviceID = "service_bqgwi8e"; // Substitua pelo seu Service ID
-    const templateID = "template_l87d08n"; // Substitua pelo seu Template ID
-    const publicKey = "oE5E2umg3jqKCkRB6"; // Substitua pelo seu Public Key
+    const serviceID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+    const templateID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+    const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+
+    if (!serviceID || !templateID || !publicKey) {
+      setStatus(
+        language === "en"
+          ? "Configure EmailJS in .env before using the contact form."
+          : "Configure o EmailJS no arquivo .env antes de usar o formulário.",
+      );
+      return;
+    }
 
     const templateParams = {
       from_email: email,
@@ -24,33 +35,44 @@ export default function Contact() {
 
     try {
       await emailjs.send(serviceID, templateID, templateParams, publicKey);
-      setStatus("Mensagem enviada com sucesso! ✅");
+      setStatus(
+        language === "en"
+          ? "Message sent successfully! ✅"
+          : "Mensagem enviada com sucesso! ✅",
+      );
       setEmail("");
       setMessage("");
     } catch (error) {
-      setStatus("Ocorreu um erro. Tente novamente. ❌");
+      setStatus(
+        language === "en"
+          ? "Something went wrong. Please try again. ❌"
+          : "Ocorreu um erro. Tente novamente. ❌",
+      );
       console.error("Erro ao enviar e-mail:", error);
     }
   };
 
   return (
-    <div className="relative min-h-screen">
+    <div className="relative min-h-[calc(100svh-5rem)] overflow-hidden">
       <div className="pointer-events-none fixed inset-0">
         <div className="absolute inset-0 bg-gradient-to-b from-background via-background/90 to-background" />
-        <div className="absolute right-0 top-0 h-[500px] w-[500px] bg-blue-500/10 blur-[100px]" />
-        <div className="absolute bottom-0 left-0 h-[500px] w-[500px] bg-purple-500/10 blur-[100px]" />
+        <div className="absolute right-0 top-0 h-[min(500px,80vw)] w-[min(500px,80vw)] bg-blue-500/10 blur-[100px]" />
+        <div className="absolute bottom-0 left-0 h-[min(500px,80vw)] w-[min(500px,80vw)] bg-purple-500/10 blur-[100px]" />
       </div>
 
       <MouseMoveEffect />
 
-      <div className="relative z-10 h-[84vh] flex items-center justify-center flex-col gap-6 px-4">
-        <h1 className="text-4xl text-foreground tracking-wide font-bold text-center">
-          <DecoderText text={"Me mande uma mensagem!"} delay={500} />
+      <div className="relative z-10 flex min-h-[calc(100svh-5rem)] flex-col items-center justify-center gap-6 px-4 py-10 sm:px-6">
+        <h1 className="text-center text-3xl font-bold tracking-wide text-foreground sm:text-4xl">
+          <DecoderText
+            text={language === "en" ? "Send me a message!" : "Envie uma mensagem!"}
+            delay={500}
+          />
         </h1>
 
         <form
           onSubmit={sendEmail}
-          className="rounded-lg w-full max-w-md flex flex-col gap-6"
+          className="flex w-full max-w-md flex-col gap-6 rounded-lg"
         >
           <div className="space-y-2">
             <label htmlFor="email" className="text-sm font-semibold">
@@ -68,13 +90,17 @@ export default function Contact() {
 
           <div className="space-y-2">
             <label htmlFor="message" className="text-sm font-semibold">
-              Mensagem:
+              {language === "en" ? "Message:" : "Mensagem:"}
             </label>
             <Input
               type="text"
               value={message}
               onChange={(e) => setMessage(e.target.value)}
-              placeholder="Insira sua mensagem."
+              placeholder={
+                language === "en"
+                  ? "Write your message."
+                  : "Insira sua mensagem."
+              }
               className="p-3 border rounded-md focus:outline-none focus:ring-2 focus:custonText"
               required
             />
@@ -86,7 +112,8 @@ export default function Contact() {
           >
             <span className="absolute inset-0 bg-custonText transition-transform duration-300 scale-x-0 group-hover:scale-x-100 origin-left" />
             <span className="flex flex-row relative gap-2 items-center z-10 text-foreground">
-              <SendHorizontal /> Enviar mensagem
+              <SendHorizontal />{" "}
+              {language === "en" ? "Send message" : "Enviar mensagem"}
             </span>
           </button>
         </form>

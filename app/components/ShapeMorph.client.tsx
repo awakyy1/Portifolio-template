@@ -1,85 +1,94 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 
-const ShapeMorph = () => {
+const DARK_COLOR_A = 0x00ffff;
+const LIGHT_COLOR_A = 0xdb7093;
+
+export default function ShapeMorph() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [isDarkMode, setIsDarkMode] = useState<boolean>(false); // Estado para detectar o tema
+  const [useFallback, setUseFallback] = useState(false);
 
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
 
-    // Função para verificar o tema atual
-    const checkTheme = () => {
-      const isDark = document.documentElement.classList.contains("dark");
-      setIsDarkMode(isDark);
-    };
+    let renderer: THREE.WebGLRenderer;
 
-    // Verifica o tema na inicialização
-    checkTheme();
+    try {
+      renderer = new THREE.WebGLRenderer({
+        alpha: true,
+        antialias: true,
+        powerPreference: "default",
+      });
+    } catch {
+      setUseFallback(true);
+      return;
+    }
 
-    // Observa mudanças na classe do HTML (quando o tema muda)
-    const observer = new MutationObserver(checkTheme);
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
-
-    // Configuração da cena
+    const getSize = () => ({
+      width: Math.max(container.clientWidth, 1),
+      height: Math.max(container.clientHeight, 1),
+    });
+    const initialSize = getSize();
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setClearColor(0x000000, 0); // Fundo transparente
+    const camera = new THREE.PerspectiveCamera(
+      75,
+      initialSize.width / initialSize.height,
+      0.1,
+      1000,
+    );
+
+    renderer.setClearColor(0x000000, 0);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.setSize(initialSize.width, initialSize.height, false);
+    renderer.domElement.style.display = "block";
+    renderer.domElement.style.width = "100%";
+    renderer.domElement.style.height = "100%";
     container.appendChild(renderer.domElement);
 
-    camera.position.set(0, 0, 30); // Centraliza a câmera
+    camera.position.set(0, 0, 28);
 
-    let currentShape = 0;
-    let morphProgress = 0;
-    let isTransitioning = false;
-
-    // Shader Material com cores dinâmicas
     const shaderMaterial = new THREE.ShaderMaterial({
       uniforms: {
         time: { value: 0 },
-        morphProgress: { value: 0 },
-        currentShape: { value: 0 },
-        colorA: { value: new THREE.Color(isDarkMode ? 0x00ffff : 0xff7f50) }, // Ciano no modo escuro, Coral no modo claro
-        colorB: { value: new THREE.Color(isDarkMode ? 0xff1493 : 0x6a5acd) }, // Rosa no modo escuro, Azul-violeta no modo claro
+        colorA: { value: new THREE.Color(LIGHT_COLOR_A) },
       },
       vertexShader: `
         uniform float time;
-        uniform float morphProgress;
-        uniform int currentShape;
         uniform vec3 colorA;
-        uniform vec3 colorB;
         varying vec3 vColor;
 
-        vec3 getSpherePosition(vec3 pos) {
-          float r = 10.0 + sin(time + length(pos)) * 0.5;
-          float theta = atan(pos.y, pos.x);
-          float phi = acos(pos.z / length(pos));
-          return vec3(r * sin(phi) * cos(theta), r * sin(phi) * sin(theta), r * cos(phi));
-        }
-
-        vec3 getCubePosition(vec3 pos) {
-          vec3 cubePos = normalize(pos) * 10.0;
-          float wave = sin(time * 2.0 + length(cubePos)) * 0.3;
-          return cubePos + vec3(wave);
-        }
-
         void main() {
-          vec3 morphedPosition = mix(getSpherePosition(position), getCubePosition(position), morphProgress);
-          vColor = mix(colorA, colorB, morphProgress); // Cores baseadas no tema
-          vec4 mvPosition = modelViewMatrix * vec4(morphedPosition, 1.0);
+          float safeLength = max(length(position), 0.0001);
+          float theta = atan(position.y, position.x);
+          float phi = acos(clamp(position.z / safeLength, -1.0, 1.0));
+          float pulse = sin(time + safeLength) * 0.5;
+          float radius = 10.0 + pulse;
+          vec3 animatedPosition = vec3(
+            radius * sin(phi) * cos(theta),
+            radius * sin(phi) * sin(theta),
+            radius * cos(phi)
+          );
+
+          vColor = colorA;
+
+          vec4 mvPosition = modelViewMatrix * vec4(animatedPosition, 1.0);
           gl_Position = projectionMatrix * mvPosition;
-          gl_PointSize = 3.0 * (1.0 / -mvPosition.z);
+          gl_PointSize = max(3.0 * (1.0 / max(-mvPosition.z, 1.0)), 0.75);
         }
       `,
       fragmentShader: `
         varying vec3 vColor;
+
         void main() {
           vec2 center = gl_PointCoord - vec2(0.5);
-          float dist = length(center);
-          float alpha = smoothstep(0.5, 0.2, dist);
+          float distanceFromCenter = length(center);
+          float alpha = smoothstep(0.5, 0.18, distanceFromCenter);
+
+          if (alpha <= 0.01) {
+            discard;
+          }
+
           gl_FragColor = vec4(vColor, alpha);
         }
       `,
@@ -88,92 +97,177 @@ const ShapeMorph = () => {
       blending: THREE.AdditiveBlending,
     });
 
-    // Geração das partículas
-    const particleCount = 30000;
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    const isCompactScreen = window.matchMedia("(max-width: 768px)").matches;
+    const hasLimitedCpu =
+      typeof navigator.hardwareConcurrency === "number" &&
+      navigator.hardwareConcurrency <= 4;
+    const particleCount =
+      isCompactScreen || hasLimitedCpu ? 16_000 : 30_000;
     const positions = new Float32Array(particleCount * 3);
-    for (let i = 0; i < particleCount; i++) {
+
+    for (let index = 0; index < particleCount; index += 1) {
       const phi = Math.random() * Math.PI * 2;
-      const costheta = Math.random() * 2 - 1;
-      const theta = Math.acos(costheta);
-      const r = 10;
-      positions[i * 3] = r * Math.sin(theta) * Math.cos(phi);
-      positions[i * 3 + 1] = r * Math.sin(theta) * Math.sin(phi);
-      positions[i * 3 + 2] = r * Math.cos(theta);
+      const cosTheta = Math.random() * 2 - 1;
+      const theta = Math.acos(cosTheta);
+      const radius = 10;
+
+      positions[index * 3] = radius * Math.sin(theta) * Math.cos(phi);
+      positions[index * 3 + 1] =
+        radius * Math.sin(theta) * Math.sin(phi);
+      positions[index * 3 + 2] = radius * Math.cos(theta);
     }
 
     const geometry = new THREE.BufferGeometry();
-    geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+    geometry.setAttribute(
+      "position",
+      new THREE.BufferAttribute(positions, 3),
+    );
+
     const particles = new THREE.Points(geometry, shaderMaterial);
     scene.add(particles);
 
-    // Alternância entre formas (morph)
-    const toggleShape = () => {
-      if (!isTransitioning) {
-        isTransitioning = true;
-        morphProgress = 0;
-      }
+    const updateThemeColors = () => {
+      const isDark = document.documentElement.classList.contains("dark");
+      shaderMaterial.uniforms.colorA.value.set(
+        isDark ? DARK_COLOR_A : LIGHT_COLOR_A,
+      );
     };
 
-    // Responsividade
+    updateThemeColors();
+    const themeObserver = new MutationObserver(updateThemeColors);
+    themeObserver.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+
     const handleResize = () => {
-      camera.aspect = window.innerWidth / window.innerHeight;
+      const size = getSize();
+      camera.aspect = size.width / size.height;
       camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setSize(size.width, size.height, false);
     };
 
-    window.addEventListener("resize", handleResize);
-    container.addEventListener("click", toggleShape);
-    container.addEventListener("touchstart", toggleShape);
+    let resizeObserver: ResizeObserver | null = null;
+    const supportsResizeObserver =
+      typeof window.ResizeObserver === "function";
+    if (supportsResizeObserver) {
+      resizeObserver = new ResizeObserver(handleResize);
+      resizeObserver.observe(container);
+    } else {
+      window.addEventListener("resize", handleResize);
+    }
 
-    // Loop de animação
-    const animate = () => {
-      requestAnimationFrame(animate);
-      const time = performance.now() * 0.001;
+    let animationFrameId = 0;
+    let disposed = false;
 
-      if (isTransitioning) {
-        morphProgress += 0.02;
-        if (morphProgress >= 1) {
-          morphProgress = 0;
-          currentShape = currentShape === 0 ? 1 : 0;
-          isTransitioning = false;
-        }
-      }
+    const renderFrame = (timestamp: number) => {
+      if (disposed) return;
 
+      const time = timestamp * 0.001;
       shaderMaterial.uniforms.time.value = time;
-      shaderMaterial.uniforms.morphProgress.value = morphProgress;
-      shaderMaterial.uniforms.currentShape.value = currentShape;
-
-      // Atualiza as cores se o tema mudar
-      shaderMaterial.uniforms.colorA.value = new THREE.Color(isDarkMode ? 0x00ffff : 0xDB7093); // Ciano para Coral
-      shaderMaterial.uniforms.colorB.value = new THREE.Color(isDarkMode ? 0xff1493 : 0x6a5acd); // Rosa para Azul-violeta
-
       particles.rotation.y = Math.sin(time * 0.2) * 0.5;
       particles.rotation.x = Math.cos(time * 0.2) * 0.3;
-
       renderer.render(scene, camera);
+      animationFrameId = requestAnimationFrame(renderFrame);
     };
 
-    animate();
+    const stopAnimation = () => {
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+        animationFrameId = 0;
+      }
+    };
 
-    // Cleanup
+    const startAnimation = () => {
+      if (!animationFrameId && !document.hidden && !prefersReducedMotion) {
+        animationFrameId = requestAnimationFrame(renderFrame);
+      }
+    };
+
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        stopAnimation();
+      } else {
+        startAnimation();
+      }
+    };
+
+    const handleContextLost = (event: Event) => {
+      event.preventDefault();
+      stopAnimation();
+      setUseFallback(true);
+    };
+
+    const handleContextRestored = () => {
+      setUseFallback(false);
+      handleResize();
+      if (prefersReducedMotion) {
+        renderer.render(scene, camera);
+      } else {
+        startAnimation();
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    renderer.domElement.addEventListener(
+      "webglcontextlost",
+      handleContextLost,
+    );
+    renderer.domElement.addEventListener(
+      "webglcontextrestored",
+      handleContextRestored,
+    );
+
+    if (prefersReducedMotion) {
+      shaderMaterial.uniforms.time.value = 0;
+      renderer.render(scene, camera);
+    } else {
+      startAnimation();
+    }
+
     return () => {
+      disposed = true;
+      stopAnimation();
+      resizeObserver?.disconnect();
       window.removeEventListener("resize", handleResize);
-      observer.disconnect();
-      container.removeChild(renderer.domElement);
+      document.removeEventListener(
+        "visibilitychange",
+        handleVisibilityChange,
+      );
+      themeObserver.disconnect();
+      renderer.domElement.removeEventListener(
+        "webglcontextlost",
+        handleContextLost,
+      );
+      renderer.domElement.removeEventListener(
+        "webglcontextrestored",
+        handleContextRestored,
+      );
+
+      if (container.contains(renderer.domElement)) {
+        container.removeChild(renderer.domElement);
+      }
+
+      geometry.dispose();
+      shaderMaterial.dispose();
+      renderer.dispose();
+      renderer.forceContextLoss();
       scene.clear();
     };
-  }, [isDarkMode]);
+  }, []);
 
   return (
     <div
-      ref={containerRef}
-      className="absolute top-0 right-0 w-full h-full"
-      style={{
-        pointerEvents: "none",
-        zIndex: 1,
-      }}
-    />
+      className="pointer-events-none absolute inset-0 z-[1]"
+      aria-hidden="true"
+    >
+      <div ref={containerRef} className="h-full w-full" />
+      {useFallback && (
+        <div className="absolute left-1/2 top-1/2 aspect-square w-[min(72vw,22rem)] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-to-br from-rose-300/30 via-violet-400/20 to-transparent blur-2xl dark:from-cyan-300/20 dark:via-fuchsia-400/20" />
+      )}
+    </div>
   );
-};
-
-export default ShapeMorph;
+}

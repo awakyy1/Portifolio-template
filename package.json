@@ -1,15 +1,14 @@
 {
-  "name": "my-remix-app",
+  "name": "remix-portfolio-template",
   "private": true,
   "sideEffects": false,
   "type": "module",
   "scripts": {
     "build": "remix vite:build",
     "dev": "remix vite:dev",
-    "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
-    "start": "remix-serve ./build/server/index.js",
     "typecheck": "tsc",
-    "gentypes": "supabase gen types typescript --db-url postgresql://postgres:postgres@127.0.0.1:54322/postgres > database.types.ts"
+    "format": "biome format --write app",
+    "gentypes": "bun run supabase gen types typescript --db-url postgresql://postgres:postgres@127.0.0.1:54322/postgres > app/types/database.ts"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
@@ -24,8 +23,8 @@
     "@remix-run/node": "^2.9.2",
     "@remix-run/react": "^2.9.2",
     "@remix-run/serve": "^2.9.2",
-    "@supabase/ssr": "github:supabase/ssr",
-    "@supabase/supabase-js": "^2.45.4",
+    "@supabase/ssr": "^0.12.4",
+    "@supabase/supabase-js": "^2.111.0",
     "@vercel/remix": "^2.9.2-patch.2",
     "caniuse-lite": "^1.0.30001689",
     "class-variance-authority": "^0.7.0",
